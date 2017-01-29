@@ -38,7 +38,7 @@ class Router
           echo call_user_func_array($route['callback'], $args);
         }
         else {
-          $class = "App\\Controllers\\".explode("@", $route["callback"])[0];
+          $class = "Tau\\Controllers\\".explode("@", $route["callback"])[0];
           $method = explode("@", $route["callback"])[1];
           echo call_user_func_array(array(new $class, $method), $args);
         }
