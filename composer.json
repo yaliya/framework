@@ -1,0 +1,22 @@
+{
+  "name"    : "tau/framework",
+  "version" : "1.0",
+  "license" : "MIT",
+  "description"  : "Tau PHP Framework",
+  "repositories" : [
+    {
+      "type" : "vcs",
+      "url"  : "https://github.com/yaliya/framework"
+    }
+  ],
+
+  "require": {
+    "twig/twig": "^1.31"
+  },
+
+  "autoload" : {
+    "psr-4" : {
+      "Tau\\" : "src/"
+    }
+  }
+}
