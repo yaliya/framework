@@ -11,12 +11,30 @@ class ComposerStaticInitb1c93b1fc5b6f45c091f409440136866
         array (
             'Tau\\' => 4,
         ),
+        'D' => 
+        array (
+            'Dotenv\\' => 7,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Tau\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'T' => 
+        array (
+            'Twig_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
         ),
     );
 
@@ -25,6 +43,7 @@ class ComposerStaticInitb1c93b1fc5b6f45c091f409440136866
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitb1c93b1fc5b6f45c091f409440136866::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitb1c93b1fc5b6f45c091f409440136866::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb1c93b1fc5b6f45c091f409440136866::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

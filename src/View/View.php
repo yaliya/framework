@@ -11,7 +11,7 @@ class View
     self::$view = $view;
   }
 
-  public static function render($file, $content)
+  public static function render($file, $content = array())
   {
     return self::$view->render($file, $content);
   }
