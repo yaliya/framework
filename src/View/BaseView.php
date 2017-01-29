@@ -6,5 +6,5 @@ abstract class BaseView
 {
   protected static $engine;
 
-  abstract public function render($file, $content = array());
+  abstract public function render($file, $content);
 }
