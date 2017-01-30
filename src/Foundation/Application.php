@@ -26,5 +26,7 @@ class Application
       "views" => $rootDir."/app/Views/",
       "cache" => $rootDir."/storage/cache/templates/"
     )));
+
+    Router::route();
   }
 };
