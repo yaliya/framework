@@ -23,8 +23,8 @@ class Application
 
     View::init(new Twig(array(
       "debug" => $_ENV["APP_DEBUG"],
-      "views" => __DIR__."/../app/Views/",
-      "cache" => __DIR__."/../storage/cache/templates/"
+      "views" => $rootDir."/app/Views/",
+      "cache" => $rootDir."/storage/cache/templates/"
     )));
   }
 };
