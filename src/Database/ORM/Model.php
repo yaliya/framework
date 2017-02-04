@@ -5,9 +5,13 @@ namespace Tau\Database\ORM;
 use Tau\Database\DBAL\MySQL;
 
 final class Model {
-  public static function from($table) {
+  public static function from($table, $values = array()) {
     $object = new \stdClass;
     $object->_table = $table;
+
+    foreach($values as $field => $value)
+      $object->$field = $value;
+
     return $object;
   }
 
@@ -36,11 +40,13 @@ final class Model {
       foreach($result as $key => $value) {
         $object->$key = $value;
       }
+
+      return $object;
     }
   }
 
   public static function where($table, $val, $fields = array("*"), $limit = 100) {
-    $prop = explode(".", $table)[1];
+    $prop = explode(".", $table);
     $table = explode(".", $table)[0];
 
     $result = MySQL::select($table, $fields, array("$prop" => $val), $limit);
@@ -89,6 +95,9 @@ final class Model {
     $table = $object->_table;
 
     if(count($props) > 0) {
+      foreach($props as $prop => $value)
+        $object->$prop = $value;
+
       $data = $props;
     }
     else {

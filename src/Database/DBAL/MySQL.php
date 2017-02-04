@@ -59,7 +59,7 @@ class MySQL
       foreach($where as $field => $value)
         $data[] = $field."=".self::quoteValue($value);
 
-      $data = implode(",", $data);
+      $data = implode(" AND ", $data);
       $query = "SELECT ".$fields." FROM ".$name." WHERE ".$data." LIMIT ".$limit;
     }
     else {
@@ -83,7 +83,7 @@ class MySQL
     foreach($set as $field => $value)
       $data[] = $field."=".self::quoteValue($value);
 
-    $data = implode(",", $data);
+    $data = implode(" AND ", $data);
 
     if(count($at) > 0) {
       foreach($at as $field => $value)

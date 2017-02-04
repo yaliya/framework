@@ -10,8 +10,7 @@
   }],
 
   "require": {
-    "twig/twig": "^1.31",
-    "vlucas/phpdotenv": "^2.4"
+    "twig/twig": "^1.31"
   },
 
   "autoload" : {
