@@ -46,7 +46,7 @@ final class Model {
   }
 
   public static function where($table, $val, $fields = array("*"), $limit = 100) {
-    $prop = explode(".", $table);
+    $prop = explode(".", $table)[1];
     $table = explode(".", $table)[0];
 
     $result = MySQL::select($table, $fields, array("$prop" => $val), $limit);
