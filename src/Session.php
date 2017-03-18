@@ -12,11 +12,11 @@ class Session
     return $_SESSION[$name];
   }
 
-  public static function set($name, $value) {
+  public static function save($name, $value) {
     $_SESSION[$name] = $value;
   }
 
-  public static function exists($name) {
+  public static function set($name) {
     return isset($_SESSION[$name]);
   }
 
@@ -24,7 +24,7 @@ class Session
     return $_SESSION;
   }
 
-  public static function unset($name) {
+  public static function delete($name) {
     unset($_SESSION[$name]);
   }
 }
