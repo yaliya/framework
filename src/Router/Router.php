@@ -73,9 +73,8 @@ class Router
             echo call_user_func_array($middleware, $args);
           }
           else {
-            $class = "Tau\\Middlewares\\".explode("@", $middleware)[0];
-            $method = explode("@", $middleware)[1];
-            echo call_user_func_array(array(new $class, $method), $args);
+            $class = "Tau\\Middlewares\\".$middleware;
+            echo call_user_func_array(array(new $class, "request"), $args);
           }
         }
 
@@ -94,9 +93,8 @@ class Router
             echo call_user_func_array($middleware, $args);
           }
           else {
-            $class = "Tau\\Middlewares\\".explode("@", $middleware)[0];
-            $method = explode("@", $middleware)[1];
-            echo call_user_func_array(array(new $class, $method), $args);
+            $class = "Tau\\Middlewares\\".$middleware;
+            echo call_user_func_array(array(new $class, "request"), $args);
           }
         }
 
