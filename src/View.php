@@ -1,6 +1,6 @@
 <?php
 
-namespace Tau\View;
+namespace Tau;
 
 class View
 {

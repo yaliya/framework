@@ -1,17 +1,12 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 require "vendor/autoload.php";
 
-use Tau\Router\Router;
-use Tau\Http\Response;
+use Tau\Route;
 use Tau\Http\Request;
-use Tau\Database\DBAL\MySQL;
-use Tau\Database\ORM\Model;
+use Tau\Http\Response;
 
-Router::get("/", function() {
+Route::get("/", function() {
   $html = "<form action='/send' method='POST' enctype='multipart/form-data'>";
   $html .= "<input type='file' name='file'>";
   $html .= "<input type='submit'>";
@@ -20,8 +15,8 @@ Router::get("/", function() {
   return Response::html($html);
 });
 
-Router::post("/send", function() {
+Route::post("/send", function() {
   return Request::files('file')->name;
 });
 
-Router::route();
+Route::route();

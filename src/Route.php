@@ -1,8 +1,8 @@
 <?php
 
-namespace Tau\Router;
+namespace Tau;
 
-class Router
+class Route
 {
   protected static $routes;
   private static $_instance = null;
