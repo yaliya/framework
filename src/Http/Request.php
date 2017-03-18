@@ -6,6 +6,7 @@ class Request
 {
   protected static $input;
   protected static $query;
+  protected static $files;
 
   private static function handle() {
 
@@ -13,20 +14,23 @@ class Request
       $_POST = array_merge($_POST, (array) json_decode(trim(file_get_contents('php://input')), true));
     }
 
-    if($_SERVER["REQUEST_METHOD"] == "GET") {
-      self::$query = new \stdClass;
+    self::$query = new \stdClass;
 
-      foreach($_GET as $param_name => $param_value) {
-        self::$query->$param_name = $param_value;
-      }
+    foreach($_GET as $param_name => $param_value) {
+      self::$query->$param_name = $param_value;
     }
 
-    if($_SERVER["REQUEST_METHOD"] == "POST") {
-      self::$input = new \stdClass;
+    self::$input = new \stdClass;
 
-      foreach($_POST as $param_name => $param_value) {
-        self::$input->$param_name = $param_value;
-      }
+    foreach($_POST as $param_name => $param_value) {
+      self::$input->$param_name = $param_value;
+    }
+
+    self::$files = new \stdClass;
+
+    foreach($_FILES as $param_name => $param_value) {
+      $params = (object)($param_value);
+      self::$files->$param_name = $params;
     }
   }
 
@@ -38,5 +42,10 @@ class Request
   public static function query($param) {
     self::handle();
     return self::$query->$param;
+  }
+
+  public static function files($param) {
+    self::handle();
+    return self::$files->$param;
   }
 }

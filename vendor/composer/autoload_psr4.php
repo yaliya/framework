@@ -7,5 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Tau\\' => array($baseDir . '/src'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Component\\HttpFoundation\\' => array($vendorDir . '/symfony/http-foundation'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
 );

@@ -5,21 +5,54 @@ namespace Tau\Router;
 class Router
 {
   protected static $routes;
+  private static $_instance = null;
+
+  public function init($routes)  {
+    self::$routes = $routes;
+  }
 
   public static function request($method, $pattern, $callback) {
     self::$routes[] = array(
       "method"      => $method,
       "pattern"     => $pattern,
-      "callback"    => $callback
+      "callback"    => $callback,
+      "after"       => [],
+      "before"      => []
     );
+
+    if(self::$_instance == null)
+
+      self::$_instance = new self();
+
+    return self::$_instance;
   }
 
   public static function get($pattern, $callback) {
-    self::request("GET", $pattern, $callback);
+    return self::request("GET", $pattern, $callback);
   }
 
   public static function post($pattern, $callback) {
-    self::request("POST", $pattern, $callback);
+    return self::request("POST", $pattern, $callback);
+  }
+
+  public function after($callback) {
+    end(self::$routes);
+
+    $lastRouteIndex = key(self::$routes);
+
+    array_unshift(self::$routes[$lastRouteIndex]["after"], $callback);
+
+    return self::$_instance;
+  }
+
+  public function before($callback) {
+    end(self::$routes);
+
+    $lastRouteIndex = key(self::$routes);
+
+    self::$routes[$lastRouteIndex]["before"][] = $callback;
+
+    return self::$_instance;
   }
 
   public static function routes() {
@@ -34,6 +67,18 @@ class Router
       if($_SERVER["REQUEST_METHOD"] == $route["method"] && preg_match($pattern, $_SERVER["REQUEST_URI"], $args)) {
         array_shift($args);
 
+        //After middleware
+        foreach($route["after"] as $middleware) {
+          if(is_callable($middleware)) {
+            echo call_user_func_array($middleware, $args);
+          }
+          else {
+            $class = "Tau\\Middlewares\\".explode("@", $middleware)[0];
+            $method = explode("@", $middleware)[1];
+            echo call_user_func_array(array(new $class, $method), $args);
+          }
+        }
+
         if(is_callable($route['callback'])) {
           echo call_user_func_array($route['callback'], $args);
         }
@@ -42,6 +87,20 @@ class Router
           $method = explode("@", $route["callback"])[1];
           echo call_user_func_array(array(new $class, $method), $args);
         }
+
+        //Before middleware
+        foreach($route["before"] as $middleware) {
+          if(is_callable($middleware)) {
+            echo call_user_func_array($middleware, $args);
+          }
+          else {
+            $class = "Tau\\Middlewares\\".explode("@", $middleware)[0];
+            $method = explode("@", $middleware)[1];
+            echo call_user_func_array(array(new $class, $method), $args);
+          }
+        }
+
+        return;
       }
     }
   }

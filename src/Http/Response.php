@@ -2,54 +2,81 @@
 
 namespace Tau\Http;
 
-class Response
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
+
+class Response extends SymfonyResponse
 {
-  public static function response($type, $message, $code)
-  {
-    header_remove();
+  public static function make($message, $type = "text/plain", $code = 200) {
+    return new Response($message, $code, array('content-type' => $type));
+  }
 
-    http_response_code($code);
-
-    header('Status: '.$code);
-
-    header('Content-Type: '.$type);
-
-    return $message;
+  public static function redirect($url) {
+    $response = new RedirectResponse($url);
+    return $response->send();
   }
 
   public static function error($message, $code = 500) {
-    header_remove();
-
-    http_response_code($code);
-
-    header($_SERVER['SERVER_PROTOCOL'] .' '. $code.' '.$message);
+    return self::make($message, "text/plain", $code)->send();
   }
 
-  public static function text($message, $code = 200) {
-    return self::response("text/plain", $message, $code);
+  public static function plain($message, $code = 200) {
+    return self::make($message, "text/plain", $code)->send();
   }
 
   public static function html($message, $code = 200) {
-    return self::response("text/html", $message, $code);
+    return self::make($message, "text/html", $code)->send();
   }
 
   public static function json($message, $code = 200) {
-    return json_encode(self::response("application/json", $message, $code));
+    return self::make(json_encode($message), "application/json", $code)->send();
   }
 
-  public static function pdf($file, $filename="PDFDocument") {
+  public static function stream($callback) {
+    $response = new StreamedResponse;
+    $response->setCallback($callback);
+    return $response->send();
+  }
+
+  public static function download($file, $filename = null) {
     $content = file_get_contents($file);
 
-    header_remove();
+    if($filename == null)
+      $filename = $file;
 
-    header('Content-type: application/pdf');
+    $response = new Response($content);
 
-    header('Content-Disposition: inline; filename="' . $filename . '"');
+    $disposition = $response->headers->makeDisposition(
+      ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+      $filename
+    );
 
-    header('Content-Transfer-Encoding: binary');
+    $response->headers->set('Content-Disposition', $disposition);
 
-    header('Accept-Ranges: bytes');
+    return $response->send();
+  }
 
-    return $content;
+  public static function binary($file) {
+    return new BinaryFileResponse($file);
+  }
+
+  public static function file($file, $type) {
+    $content = file_get_contents($file);
+
+    $response = new Response($content, 200, array('content-type' => $type));
+
+    return $response->send();
+  }
+
+  public static function image($file, $type = "image/jpeg") {
+    return self::file($file, $type);
+  }
+
+  public static function pdf($file, $type="application/pdf") {
+    return self::file($file, $type);
   }
 }
