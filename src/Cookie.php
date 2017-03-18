@@ -9,12 +9,17 @@ class Cookie
     setcookie($name, $value, $time);
   }
 
-  public static function get($name)
+  public static function save($name)
   {
     return $_COOKIE[$name];
   }
 
-  public static function unset($name)
+  public static function set($name)
+  {
+    return isset($_COOKIE[$name]);
+  }
+
+  public static function remove($name)
   {
     unset($_COOKIE[$name]);
   }
