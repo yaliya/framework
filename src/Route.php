@@ -5,6 +5,7 @@ namespace Tau;
 class Route
 {
   protected static $routes;
+  protected static $middleware = null;
   private static $_instance = null;
 
   public function init($routes)  {
@@ -16,7 +17,7 @@ class Route
       "method"      => $method,
       "pattern"     => $pattern,
       "callback"    => $callback,
-      "after"       => [],
+      "after"       => [self::$middleware],
       "before"      => []
     );
 
@@ -33,6 +34,12 @@ class Route
 
   public static function post($pattern, $callback) {
     return self::request("POST", $pattern, $callback);
+  }
+
+  public static function group($middleware, $callback) {
+    self::$middleware = $middleware;
+    call_user_func($callback);
+    self::$middleware = null;
   }
 
   public function after($callback) {
@@ -73,12 +80,15 @@ class Route
             echo call_user_func_array($middleware, $args);
           }
           else {
-            $class = "Tau\\Middlewares\\".$middleware;
-            echo call_user_func_array(array(new $class, "request"), $args);
+            if($middleware != null) {
+              $class = "Tau\\Middlewares\\".$middleware;
+              echo call_user_func_array(array(new $class, "request"), $args);
+            }
           }
         }
 
         if(is_callable($route['callback'])) {
+          echo "callable";
           echo call_user_func_array($route['callback'], $args);
         }
         else {
@@ -93,8 +103,10 @@ class Route
             echo call_user_func_array($middleware, $args);
           }
           else {
-            $class = "Tau\\Middlewares\\".$middleware;
-            echo call_user_func_array(array(new $class, "request"), $args);
+            if($middleware != null) {
+              $class = "Tau\\Middlewares\\".$middleware;
+              echo call_user_func_array(array(new $class, "request"), $args);
+            }
           }
         }
 
