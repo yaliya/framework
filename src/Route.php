@@ -88,7 +88,6 @@ class Route
         }
 
         if(is_callable($route['callback'])) {
-          echo "callable";
           echo call_user_func_array($route['callback'], $args);
         }
         else {
