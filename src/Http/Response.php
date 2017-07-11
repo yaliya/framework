@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class Response extends SymfonyResponse
 {
   public static function make($message, $type = "text/plain", $code = 200) {
-    return new Response($message, $code, array('content-type' => $type));
+    return new SymfonyResponse($message, $code, array('content-type' => $type));
   }
 
   public static function redirect($url) {
@@ -33,7 +33,7 @@ class Response extends SymfonyResponse
   }
 
   public static function json($message, $code = 200) {
-    return self::make(json_encode($message), "application/json", $code)->send();
+    self::make(json_encode($message), "application/json", $code)->send();
   }
 
   public static function stream($callback) {
