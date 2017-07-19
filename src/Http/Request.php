@@ -34,6 +34,11 @@ class Request
     }
   }
 
+  public static function has($param) {
+    self::handle();
+    return isset(self::$input->$param);
+  }
+
   public static function input($param) {
     self::handle();
     return self::$input->$param;
