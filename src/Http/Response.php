@@ -21,15 +21,15 @@ class Response extends SymfonyResponse
   }
 
   public static function error($message, $code = 500) {
-    return self::make($message, "text/plain", $code)->send();
+    self::make($message, "text/plain", $code)->send();
   }
 
   public static function plain($message, $code = 200) {
-    return self::make($message, "text/plain", $code)->send();
+    self::make($message, "text/plain", $code)->send();
   }
 
   public static function html($message, $code = 200) {
-    return self::make($message, "text/html", $code)->send();
+    self::make($message, "text/html", $code)->send();
   }
 
   public static function json($message, $code = 200) {

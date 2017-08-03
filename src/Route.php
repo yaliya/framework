@@ -77,12 +77,16 @@ class Route
         //After middleware
         foreach($route["after"] as $middleware) {
           if(is_callable($middleware)) {
-            echo call_user_func_array($middleware, $args);
+            if(!call_user_func_array($middleware, $args)) {
+              return;
+            }
           }
           else {
             if($middleware != null) {
               $class = "Tau\\Middlewares\\".$middleware;
-              echo call_user_func_array(array(new $class, "request"), $args);
+              if(!call_user_func_array(array(new $class, "request"), $args)) {
+                return;
+              }
             }
           }
         }
@@ -99,12 +103,16 @@ class Route
         //Before middleware
         foreach($route["before"] as $middleware) {
           if(is_callable($middleware)) {
-            echo call_user_func_array($middleware, $args);
+            if(!call_user_func_array($middleware, $args)) {
+              return;
+            }
           }
           else {
             if($middleware != null) {
               $class = "Tau\\Middlewares\\".$middleware;
-              echo call_user_func_array(array(new $class, "request"), $args);
+              if(!call_user_func_array(array(new $class, "request"), $args)) {
+                return;
+              }
             }
           }
         }
