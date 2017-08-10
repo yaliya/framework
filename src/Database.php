@@ -14,5 +14,7 @@ class Database extends Capsule
     $capsule->setAsGlobal();
 
     $capsule->bootEloquent();
+    
+    return $capsule;
   }
 }
