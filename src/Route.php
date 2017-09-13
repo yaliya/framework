@@ -69,7 +69,7 @@ class Route
   public static function route() {
     foreach(self::$routes as $route) {
       $args = array();
-      $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9\_\-]+/', '([a-zA-Z0-9\-\_]+)', preg_quote($route["pattern"])) . "$@D";
+      $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9%=.\_\-]+/', '([a-zA-Z0-9%=.\-\_]+)', preg_quote($route["pattern"])) . "$@D";
 
       if($_SERVER["REQUEST_METHOD"] == $route["method"] && preg_match($pattern, $_SERVER["REQUEST_URI"], $args)) {
         array_shift($args);

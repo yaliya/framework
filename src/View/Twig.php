@@ -14,4 +14,8 @@ class Twig extends BaseView
   public function render($file, $content = array()) {
     return self::$engine->render($file, $content);
   }
+
+  public function engine() {
+  	return self::$engine;
+  }
 }

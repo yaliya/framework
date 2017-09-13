@@ -11,6 +11,11 @@ class View
     self::$view = $view;
   }
 
+  public static function engine()
+  {
+  	return self::$view->engine();
+  }
+
   public static function render($file, $content = array())
   {
     return self::$view->render($file, $content);
